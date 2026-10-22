@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lompat Bintang by erine</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="wrapper">
+    <canvas id="gameCanvas" width="800" height="450"></canvas>
+
+    <!-- Tombol sentuh untuk layar HP (hanya tampil saat main platformer) -->
+    <div id="touchControls" style="display:none">
+      <button id="btnLeft"  class="touchBtn">◀</button>
+      <button id="btnJump"  class="touchBtn jumpBtn">⬆ Lompat</button>
+      <button id="btnRight" class="touchBtn">▶</button>
+    </div>
+  </div>
+
+  <!-- Urutan muat: data dulu, lalu logika, lalu mini game, lalu menu, lalu entry point -->
+  <script src="js/audio.js"></script>
+  <script src="js/levels.js"></script>
+  <script src="js/games.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/games/snake.js"></script>
+  <script src="js/games/memory.js"></script>
+  <script src="js/menu.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

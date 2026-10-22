@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Debug Lompat Bintang</title>
+  <style>
+    body { font-family: monospace; background: #1a1a2e; color: #eee; padding: 20px; margin: 0; }
+    .ok   { color: #6aff8a; }
+    .err  { color: #ff6a6a; font-weight: bold; }
+    .warn { color: #ffcc44; }
+    h2    { color: #ff88cc; }
+    pre   { background: #0d0d1a; padding: 12px; border-radius: 6px; overflow: auto; font-size: 13px; }
+    .box  { background: #0d1a2e; border: 1px solid #334; padding: 12px; border-radius: 8px; margin: 8px 0; }
+  </style>
+</head>
+<body>
+<h2>🔍 Diagnostik — Lompat Bintang</h2>
+<div id="log"></div>
+<div class="box">
+  <b>Jika semua ✅ tapi game tetap tidak muncul:</b><br>
+  1. Buka DevTools browser (F12) → Console tab<br>
+  2. Refresh halaman (Ctrl+R)<br>
+  3. Cari pesan merah (error)<br>
+  4. Salin pesan error tersebut
+</div>
+
+<!-- Elemen yang dibutuhkan modul -->
+<canvas id="gameCanvas" width="800" height="450" style="display:none"></canvas>
+<div id="wrapper" style="position:absolute;left:-9999px">
+  <div id="touchControls">
+    <button id="btnLeft"></button>
+    <button id="btnJump"></button>
+    <button id="btnRight"></button>
+  </div>
+</div>
+
+<script>
+  // Tangkap semua error global
+  const errors = [];
+  window.addEventListener('error', e => {
+    errors.push({ msg: e.message, file: e.filename?.split('/').pop(), line: e.lineno });
+    logErrors();
+  });
+
+  function log(cls, text) {
+    const d = document.getElementById('log');
+    d.innerHTML += `<div class="${cls}">${text}</div>`;
+  }
+  function logErrors() {
+    if (errors.length === 0) return;
+    log('err', '<br>⚠️ Error yang tertangkap:');
+    errors.forEach(e => log('err', `  ❌ ${e.file} baris ${e.line}: ${e.msg}`));
+  }
+</script>
+
+<script src="js/audio.js"></script>
+<script>
+  if (window.Audio_) log('ok','✅ audio.js — window.Audio_ OK');
+  else log('err','❌ audio.js — window.Audio_ tidak ditemukan!');
+</script>
+
+<script src="js/levels.js"></script>
+<script>
+  if (window.LEVELS && window.LEVELS.length === 3) log('ok',`✅ levels.js — ${window.LEVELS.length} level ditemukan`);
+  else log('err','❌ levels.js — window.LEVELS tidak ada / tidak 3 level!');
+</script>
+
+<script src="js/games.js"></script>
+<script>
+  if (window.GAME_LIST && window.GAME_LIST.length === 3) log('ok',`✅ games.js — ${window.GAME_LIST.length} game ditemukan`);
+  else log('err','❌ games.js — window.GAME_LIST bermasalah');
+</script>
+
+<script src="js/game.js"></script>
+<script>
+  if (window.Game && typeof window.Game.initNewGame === 'function') log('ok','✅ game.js — window.Game OK');
+  else log('err','❌ game.js — window.Game tidak ada!');
+  if (typeof CAM_W !== 'undefined') log('ok',`✅ CAM_W = ${CAM_W}, CAM_H = ${CAM_H}`);
+  else log('err','❌ CAM_W tidak terdefinisi setelah game.js!');
+</script>
+
+<script src="js/games/snake.js"></script>
+<script>
+  if (window.SnakeGame) log('ok','✅ snake.js — window.SnakeGame OK');
+  else log('err','❌ snake.js — window.SnakeGame tidak ada!');
+</script>
+
+<script src="js/games/memory.js"></script>
+<script>
+  if (window.MemoryGame) log('ok','✅ memory.js — window.MemoryGame OK');
+  else log('err','❌ memory.js — window.MemoryGame tidak ada!');
+</script>
+
+<script src="js/menu.js"></script>
+<script>
+  if (window.Menu && typeof window.Menu.render === 'function') log('ok','✅ menu.js — window.Menu OK');
+  else log('err','❌ menu.js — window.Menu tidak ada!');
+</script>
+
+<script src="js/main.js"></script>
+<script>
+  if (window.Main && typeof window.Main.goMenu === 'function') log('ok','✅ main.js — window.Main OK');
+  else log('err','❌ main.js — window.Main tidak ada!');
+  if (window.GameInput) log('ok','✅ GameInput OK');
+  else log('err','❌ GameInput tidak ada!');
+
+  // Ringkasan
+  setTimeout(() => {
+    const allOk = document.querySelectorAll('.err').length === 0;
+    if (allOk) {
+      log('ok', '<br>🎉 Semua modul berhasil dimuat! Buka <a href="index.html" style="color:#ff88cc">index.html</a> untuk main.');
+    } else {
+      log('err', '<br>🔴 Ada error. Salin pesan error di atas dan bagikan untuk diperbaiki.');
+    }
+    logErrors();
+  }, 300);
+</script>
+</body>
+</html>
