@@ -1,0 +1,88 @@
+/* ===== RESET & BASE ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== HALAMAN ===== */
+body {
+  background: #FFF0F5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+}
+
+/* Dark mode otomatis */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #2a1a22;
+  }
+}
+
+/* ===== WRAPPER CANVAS ===== */
+#wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 800px;
+  padding: 8px;
+}
+
+/* ===== CANVAS ===== */
+#gameCanvas {
+  display: block;
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(200, 100, 140, 0.18);
+  touch-action: none;
+  user-select: none;
+}
+
+/* ===== TOMBOL SENTUH ===== */
+#touchControls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 6px 0 4px;
+}
+
+.touchBtn {
+  background: #FFD6E4;
+  border: 2px solid #F7B6CC;
+  border-radius: 12px;
+  color: #6B4A5E;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 12px 20px;
+  min-width: 70px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.1s, transform 0.1s;
+  touch-action: manipulation;
+}
+
+.touchBtn:active,
+.touchBtn.pressed {
+  background: #F7B6CC;
+  transform: scale(0.94);
+}
+
+.jumpBtn {
+  min-width: 110px;
+  background: #FFE3EC;
+}
+
+/* Touch controls dikelola oleh main.js (style.display = 'flex'/'none') */
+/* Di perangkat dengan mouse, sembunyikan saat sedang di menu (display:none dari HTML) */
+/* Tidak gunakan !important agar JS bisa override */
