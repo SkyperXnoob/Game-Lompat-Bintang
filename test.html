@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Test Load</title>
+  <style>
+    body { font-family: monospace; background: #1a1a2e; color: #eee; padding: 20px; }
+    .ok  { color: #6aff8a; }
+    .err { color: #ff6a6a; }
+    pre  { background: #0d0d1a; padding: 10px; border-radius: 6px; overflow: auto; }
+  </style>
+</head>
+<body>
+<h2>🔍 Diagnostik Modul</h2>
+<div id="log"></div>
+
+<canvas id="gameCanvas" width="800" height="450" style="display:none"></canvas>
+<div id="wrapper" style="display:none">
+  <div id="touchControls">
+    <button id="btnLeft"></button>
+    <button id="btnJump"></button>
+    <button id="btnRight"></button>
+  </div>
+</div>
+
+<script src="js/audio.js"></script>
+<script src="js/levels.js"></script>
+<script src="js/games.js"></script>
+<script src="js/game.js"></script>
+<script src="js/games/snake.js"></script>
+<script src="js/games/memory.js"></script>
+<script src="js/menu.js"></script>
+<script src="js/main.js"></script>
+
+<script>
+  const log = document.getElementById('log');
+  function check(name, expr) {
+    try {
+      const val = typeof expr === 'function' ? expr() : expr;
+      const ok = val !== undefined && val !== null;
+      log.innerHTML += `<div class="${ok ? 'ok' : 'err'}">${ok ? '✅' : '❌'} ${name}: ${JSON.stringify(val)?.slice(0,80)}</div>`;
+    } catch(e) {
+      log.innerHTML += `<div class="err">❌ ${name}: ERROR — ${e.message}</div>`;
+    }
+  }
+
+  check('window.Audio_',       window.Audio_);
+  check('window.Audio_.putarEfek', typeof window.Audio_.putarEfek === 'function');
+  check('window.Audio_.getMuted',  typeof window.Audio_.getMuted === 'function');
+  check('window.LEVELS',       () => Array.isArray(window.LEVELS) && window.LEVELS.length);
+  check('window.LEVELS[0].id', () => window.LEVELS[0].id);
+  check('window.LEVELS[1].movingPlatforms.length', () => window.LEVELS[1].movingPlatforms.length);
+  check('window.LEVELS[2].spikes.length', () => window.LEVELS[2].spikes.length);
+  check('window.GAME_LIST',    () => Array.isArray(window.GAME_LIST) && window.GAME_LIST.length);
+  check('window.Game',         window.Game);
+  check('window.Game.initNewGame', typeof window.Game.initNewGame === 'function');
+  check('window.SnakeGame',    window.SnakeGame);
+  check('window.MemoryGame',   window.MemoryGame);
+  check('window.Menu',         window.Menu);
+  check('window.Menu.render',  typeof window.Menu.render === 'function');
+  check('window.Main',         window.Main);
+  check('window.Main.goMenu',  typeof window.Main.goMenu === 'function');
+  check('window.Main.launchGame', typeof window.Main.launchGame === 'function');
+  check('window.GameInput',    window.GameInput);
+
+  // Cek tidak ada error tersisa di konsol
+  log.innerHTML += '<br><b>Cek juga DevTools Console (F12) untuk error tambahan.</b>';
+</script>
+</body>
+</html>
